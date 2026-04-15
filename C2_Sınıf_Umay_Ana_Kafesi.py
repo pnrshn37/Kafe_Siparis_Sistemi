@@ -3,37 +3,46 @@ print("*** Umay Ana Kahve Evi'ne Hoş Geldiniz ***")
 # Menü
 menu = {
     "1": {
-        "kategori": "Sıcak İçecekler",
+        "kategori": "Kahveler",
         "urunler": {
-            "1": ("Kahve", 60),
-            "2": ("Filtre Kahve", 80),
-            "3": ("Çay", 20),
-            "4": ("Bitki Çayı", 50),
-            "5": ("Sıcak Çikolata", 100),
-            "6": ("White Chocolate Mocha", 150),
-            "7": ("Salep", 45)
+            "1": ("Türk Kahvesi", 100.00),
+            "2": ("Espresso", 120.00),
+            "3": ("Americano", 130.00),
+            "4": ("Latte", 125.00),
+            "5": ("Cappuccino", 135.00),
+            "6": ("Macchiato", 140.00),
+            "7": ("Mocha", 150.00),
+            "8": ("Flat White", 145.00)
         }
     },
 
     "2": {
-        "kategori": "Soğuk İçecekler",
+        "kategori": "Çaylar",
         "urunler": {
-            "1": ("Limonata", 50),
-            "2": ("Karadut Suyu", 60),
-            "3": ("Cool Lime", 70),
-            "4": ("Buzlu Çay", 80),
-            "5": ("Sade Soda", 40),
-            "6": ("Meyveli Soda", 45),
-            "7": ("Gazoz", 60)
+            "1": ("Siyah Çay", 75.00),
+            "2": ("Bitki .Çayları", 85.00),
+            "3": ("Chai Yea Latte", 90.00)
         }
     },
 
     "3": {
         "kategori": "Tatlılar",
         "urunler": {
-            "1": ("Çikolatalı Pasta", 75),
-            "2": ("Meyveli Pasta", 80),
-            "3": ("Cheesecake", 85)
+            "1": ("Pasta Dilimleri", 175.00),
+            "2": ("Kurabiyeler", 95.00),
+            "3": ("Cheesecake", 180.00)
+            "4": ("Tiramisu", 170.00),
+            "5": ("Brownie", 185.00)
         }
-    }
+    },
+    "4":{
+        "kategori":"Atıştırmalıklar",
+        "urunler":{
+            "1":("Kruvasan," 80.00),
+            "2":("Bagel", 90.00),
+            "3":("Tostlar", 125.00),
+            "4":("Sandiviçler", 135.00),
+            "5":("Salatalar",185.00)
+            }
+        }
 }
