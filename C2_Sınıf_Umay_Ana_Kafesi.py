@@ -30,7 +30,7 @@ menu = {
         "urunler": {
             "1": ("Pasta Dilimleri", 175.00),
             "2": ("Kurabiyeler", 95.00),
-            "3": ("Cheesecake", 180.00)
+            "3": ("Cheesecake", 180.00),
             "4": ("Tiramisu", 170.00),
             "5": ("Brownie", 185.00)
         }
