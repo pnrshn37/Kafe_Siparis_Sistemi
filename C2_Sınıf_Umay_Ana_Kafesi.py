@@ -20,8 +20,8 @@ menu = {
         "kategori": "Çaylar",
         "urunler": {
             "1": ("Siyah Çay", 75.00),
-            "2": ("Bitki .Çayları", 85.00),
-            "3": ("Chai Yea Latte", 90.00)
+            "2": ("Bitki Çayları", 85.00),
+            "3": ("Chai Tea Latte", 90.00)
         }
     },
 
@@ -38,10 +38,10 @@ menu = {
     "4":{
         "kategori":"Atıştırmalıklar",
         "urunler":{
-            "1":("Kruvasan," 80.00),
+            "1":("Kruvasan", 80.00),
             "2":("Bagel", 90.00),
             "3":("Tostlar", 125.00),
-            "4":("Sandiviçler", 135.00),
+            "4":("Sandviçler", 135.00),
             "5":("Salatalar",185.00)
             }
         }
