@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umay Ana Kahve Evi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="menu">
+            <h1>☕ Umay Ana Kahve Evi</h1>
+
+            {% for kategori_id, kategori_bilgi in menu.items() %}
+            <h2>{{ kategori_bilgi["kategori"] }}</h2>
+
+            <div class="urun-grid">
+                {% for urun_id, urun in kategori_bilgi["urunler"].items() %}
+                <div class="urun-kart" id="urun-{{ kategori_id }}-{{ urun_id }}">
+
+                    <img src="{{ url_for('static', filename='images/' ~ urun[2]) }}" alt="{{ urun[0] }}">
+
+                    <div class="urun-bilgi">
+                        <h3>{{ urun[0] }}</h3>
+                        <p class="aciklama">{{ urun[3] }}</p>
+                        <p class="fiyat">{{ "%.0f"|format(urun[1]) }} TL</p>
+                    </div>
+
+                    <form action="{{ url_for('ekle') }}#urun-{{ kategori_id }}-{{ urun_id }}" method="post">
+                        <input type="hidden" name="urun_adi" value="{{ urun[0] }}">
+                        <input type="hidden" name="fiyat" value="{{ urun[1] }}">
+                        <button class="add-btn" type="submit">+</button>
+                    </form>
+
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="sepet">
+            <h2>🛒 Sepet</h2>
+
+            {% if siparisler %}
+            <ul>
+                {% for urun in siparisler %}
+                <li>{{ urun[0] }} - {{ "%.0f"|format(urun[1]) }} TL</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
+
+            <form action="{{ url_for('temizle') }}" method="post">
+                <button class="clear-btn" type="submit">Temizle</button>
+            </form>
+            {% else %}
+            <p>Sepet boş</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+</html>
