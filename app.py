@@ -15,7 +15,7 @@ menu = {
             "4": ("Cappuccino", 135.00, "cappuccino.jpg", "Süt köpüklü, dengeli aroma"),
             "5": ("Macchiato", 140.00, "macchiato.jpg", "Espresso ve hafif süt köpüğü"),
             "6": ("Mocha", 150.00, "mocha.jpg", "Çikolatalı, sütlü kahve"),
-            "7": ("Flat White", 145.00, "flat-white.jpg", "Yoğun espresso, ince süt dokusu")
+            "7": ("Flat White", 145.00, "flat-white.jpg", "Yoğun espresso, ınce süt dokusu")
         }
     },
     "2": {
