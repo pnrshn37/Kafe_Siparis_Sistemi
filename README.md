@@ -2,6 +2,8 @@
 
 Bu proje, Python ile geliştirilmiş interaktif bir kafe sipariş sistemidir.  
 Kullanıcıların menüden ürün seçmesini, sipariş oluşturmasını ve toplam tutarı hesaplamasını sağlar.
+Projeyi görmek için Instagram paylaşımımı inceleyebilirsiniz:
+https://www.instagram.com/pinartechjourney?igsh=MXB2MDJqbXJheDB3ZA%3D%3D
 
 ## 🚀 Özellikler
 
