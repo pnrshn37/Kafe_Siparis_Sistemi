@@ -147,20 +147,18 @@
     </div>
 
     <script>
-        document.querySelectorAll(".ekle-form").forEach(form => {
-            form.addEventListener("submit", function (e) {
-                e.preventDefault(); // SAYFA YENİLENMESİN
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedScroll = sessionStorage.getItem("scrollPosition");
 
-                const formData = new FormData(this);
+            if (savedScroll !== null) {
+                window.scrollTo(0, Number(savedScroll));
+                sessionStorage.removeItem("scrollPosition");
+            }
 
-                fetch("/ekle", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(() => {
-                        // sadece sepeti yenile (istersen tüm sayfa değil)
-                        location.reload(); // geçici çözüm
-                    });
+            document.querySelectorAll("form").forEach(function (form) {
+                form.addEventListener("submit", function () {
+                    sessionStorage.setItem("scrollPosition", window.scrollY);
+                });
             });
         });
     </script>

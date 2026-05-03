@@ -14,7 +14,7 @@ siparisler = []
 menu = {
     "1": {
         "kategori": "Sıcak İçecekler",
-        "ikon": "☕",
+        "ikon": "☕";
         "alt_baslik": "Topraktan Gelenler",
         "urunler": {
           "1": ("Türk Kahvesi", 100.00, "türkkahve.jpg", "Geleneksel, bol köpüklü Türk kahvesi"),
