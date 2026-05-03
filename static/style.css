@@ -156,12 +156,15 @@ body {
     margin: -10px auto 0;
     mix-blend-mode: multiply;
     filter: brightness(1.15) contrast(1.15);
+    z-index: 2;
+    position: relative;
 }
 
 .header h1 {
     font-size: 22px;
-    margin-top: -5px;
+    margin-top: 5px;
     line-height: 1.2;
+    z-index: 2;
     color: #3c5636;
     font-style: italic;
     font-weight: normal;
