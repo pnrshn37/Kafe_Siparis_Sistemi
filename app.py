@@ -19,7 +19,7 @@ menu = {
           "1": ("Türk Kahvesi", 100.00, "türkkahve.jpg", "Geleneksel, bol köpüklü Türk kahvesi"),
           "2": ("Damla Sakızlı Kahve", 100.00, "Damla-Sakızlı.jpg", "Ege esintili, damla sakızı aromalı özel kahve"),
           "3": ("Sütlü Türk Kahvesi", 100.00, "sutlu-kahvee.jpg", "Süt ile yumuşatılmış, hafif içimli Türk kahvesi"),
-          "4": ("Menengiç Kahvesi", 100.00, "menengickahvesi.jpg", "Kafeinsiz, doğal menengiç aromalı yöresel lezzet"),
+          "4": ("Menengiç Kahvesi", 100.00, "menengic-kahvesi.jpg", "Kafeinsiz, doğal menengiç aromalı yöresel lezzet"),
           "5": ("Filtre Kahve", 100.00, "filtre-kahve.jpg", "Yumuşak içimli, dengeli aromalı klasik filtre kahve"),
           "6": ("Espresso", 120.00, "espresso.jpg", "Yoğun aromalı, sert ve güçlü içim"),
           "7": ("Americano", 130.00, "americano.jpg", "Espresso bazlı, su ile hafifletilmiş kahve"),
