@@ -8,59 +8,161 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="page">
 
-        <div class="menu">
-            <h1>☕ Umay Ana Kahve Evi</h1>
+        <aside class="side-panel">
+            <div class="side-box top-box">
+                <h2>UMAY</h2>
 
-            {% for kategori_id, kategori_bilgi in menu.items() %}
-            <h2>{{ kategori_bilgi["kategori"] }}</h2>
+                <p>
+                    Eski Türk inancında koruyucu, sevgi dolu ve yaşam veren bir ruh olan Umay,
+                    bereketin, huzurun ve hayatın simgesidir.
+                </p>
 
-            <div class="urun-grid">
-                {% for urun_id, urun in kategori_bilgi["urunler"].items() %}
-                <div class="urun-kart" id="urun-{{ kategori_id }}-{{ urun_id }}">
+                <div class="small-line"></div>
 
-                    <img src="{{ url_for('static', filename='images/' ~ urun[2]) }}" alt="{{ urun[0] }}">
+                <p>Bu mekân, Umay Ana’nın sıcaklığını yaşatmak için kuruldu.</p>
 
-                    <div class="urun-bilgi">
-                        <h3>{{ urun[0] }}</h3>
-                        <p class="aciklama">{{ urun[3] }}</p>
-                        <p class="fiyat">{{ "%.0f"|format(urun[1]) }} TL</p>
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="side-box note-box">
+                <h3>Her şey</h3>
+                <ul>
+                    <li>Ev yapımıdır.</li>
+                    <li>Katkısızdır.</li>
+                    <li>Şeker yerine bal tercih edilir.</li>
+                    <li>Günlük taze hazırlanır.</li>
+                </ul>
+            </div>
+
+            <div class="side-badge">
+                <p>UMAY ANA’DA</p>
+                <strong>HER ŞEY BİRAZ EV<br>BİRAZ DOĞA<br>BİRAZ HUZUR</strong>
+            </div>
+        </aside>
+
+        <main class="menu-area">
+
+            <img src="{{ url_for('static', filename='images/yaprak-removebg-preview.png') }}" class="leaf leaf-top-right" alt="Yaprak süsleme">
+
+            <header class="header">
+                <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="logo" alt="Umay Ana logo">
+                <h1>Umay Ana</h1>
+                <h4>Kahve Evi</h4>
+                <p>Doğadan gelen huzur...</p>
+            </header>
+
+            <section class="category-grid">
+                {% for kategori_id, kategori_bilgi in menu.items() %}
+                <div class="category-box">
+
+                    <div class="category-title">
+                        <span>{{ kategori_bilgi["ikon"] }}</span>
+                        <div>
+                            <h2>{{ kategori_bilgi["kategori"] }}</h2>
+                            <p>{{ kategori_bilgi["alt_baslik"] }}</p>
+                        </div>
                     </div>
 
-                    <form action="{{ url_for('ekle') }}#urun-{{ kategori_id }}-{{ urun_id }}" method="post">
-                        <input type="hidden" name="urun_adi" value="{{ urun[0] }}">
-                        <input type="hidden" name="fiyat" value="{{ urun[1] }}">
-                        <button class="add-btn" type="submit">+</button>
-                    </form>
+                    {% for urun_id, urun in kategori_bilgi["urunler"].items() %}
+                    <div class="menu-row" id="urun-{{ kategori_id }}-{{ urun_id }}">
+
+                        <img src="{{ url_for('static', filename='images/' ~ urun[2]) }}" class="product-img" alt="{{ urun[0] }}">
+
+                        <div class="product-info">
+                            <h3>{{ urun[0] }}</h3>
+                            <p>{{ urun[3] }}</p>
+                        </div>
+
+                        <div class="product-price">
+                            <strong>{{ "%.0f"|format(urun[1]) }} TL</strong>
+
+                            <form action="{{ url_for('ekle') }}" method="post">
+                                <input type="hidden" name="urun_adi" value="{{ urun[0] }}">
+                                <input type="hidden" name="fiyat" value="{{ urun[1] }}">
+                                <input type="hidden" name="anchor" value="urun-{{ kategori_id }}-{{ urun_id }}">
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    {% endfor %}
 
                 </div>
                 {% endfor %}
-            </div>
-            {% endfor %}
-        </div>
+            </section>
 
-        <div class="sepet">
-            <h2>🛒 Sepet</h2>
+            <footer class="footer-text">
+                Teşekkür ederiz, iyi ki varsınız ♥
+            </footer>
 
-            {% if siparisler %}
-            <ul>
-                {% for urun in siparisler %}
-                <li>{{ urun[0] }} - {{ "%.0f"|format(urun[1]) }} TL</li>
-                {% endfor %}
-            </ul>
-
-            <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
-
-            <form action="{{ url_for('temizle') }}" method="post">
-                <button class="clear-btn" type="submit">Temizle</button>
-            </form>
-            {% else %}
-            <p>Sepet boş</p>
-            {% endif %}
-        </div>
+        </main>
 
     </div>
 
+    <div class="sepet" id="sepet">
+        <h2>🛒 Sepet</h2>
+
+        {% if siparisler %}
+        <ul>
+            {% for urun in siparisler %}
+            <li class="sepet-item">
+
+                <div class="sepet-bilgi">
+                    <strong>{{ urun["urun"] }}</strong>
+                    <span>x{{ urun["adet"] }}</span>
+                </div>
+
+                <div class="sepet-actions">
+                    <form action="{{ url_for('azalt') }}" method="post">
+                        <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
+                        <input type="hidden" name="anchor" value="sepet">
+                        <button type="submit" class="minus-btn">-</button>
+                    </form>
+
+                    <form action="{{ url_for('ekle') }}" method="post">
+                        <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
+                        <input type="hidden" name="fiyat" value="{{ urun['fiyat'] }}">
+                        <input type="hidden" name="anchor" value="sepet">
+                        <button type="submit" class="plus-btn">+</button>
+                    </form>
+                </div>
+
+                <strong>{{ "%.0f"|format(urun["fiyat"] * urun["adet"]) }} TL</strong>
+
+            </li>
+            {% endfor %}
+        </ul>
+
+        <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
+
+        <form action="{{ url_for('temizle') }}" method="post">
+            <button class="clear-btn" type="submit">Sepeti Temizle</button>
+        </form>
+
+        {% else %}
+        <p class="empty-cart">Sepet boş</p>
+        {% endif %}
+    </div>
+
+    <script>
+        document.querySelectorAll(".ekle-form").forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault(); // SAYFA YENİLENMESİN
+
+                const formData = new FormData(this);
+
+                fetch("/ekle", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(() => {
+                        // sadece sepeti yenile (istersen tüm sayfa değil)
+                        location.reload(); // geçici çözüm
+                    });
+            });
+        });
+    </script>
 </body>
 </html>
