@@ -117,14 +117,12 @@
                 <div class="sepet-actions">
                     <form action="{{ url_for('azalt') }}" method="post">
                         <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
-                        <input type="hidden" name="anchor" value="sepet">
                         <button type="submit" class="minus-btn">-</button>
                     </form>
 
                     <form action="{{ url_for('ekle') }}" method="post">
                         <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
                         <input type="hidden" name="fiyat" value="{{ urun['fiyat'] }}">
-                        <input type="hidden" name="anchor" value="sepet">
                         <button type="submit" class="plus-btn">+</button>
                     </form>
                 </div>
@@ -137,12 +135,16 @@
 
         <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
 
+        <button type="button" class="order-btn">
+            Sipariş Oluştur
+        </button>
+
         <form action="{{ url_for('temizle') }}" method="post">
             <button class="clear-btn" type="submit">Sepeti Temizle</button>
         </form>
 
         {% else %}
-        <p class="empty-cart">Sepet boş</p>
+        <p class="empty-cart">Sepetiniz boş</p>
         {% endif %}
     </div>
 
