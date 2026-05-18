@@ -6,163 +6,208 @@
     <title>Umay Ana Kahve Evi</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
-    <div class="page">
+<div class="page">
 
-        <aside class="side-panel">
-            <div class="side-box top-box">
-                <h2>UMAY</h2>
+    <aside class="side-panel">
 
-                <p>
-                    Eski Türk inancında koruyucu, sevgi dolu ve yaşam veren bir ruh olan Umay,
-                    bereketin, huzurun ve hayatın simgesidir.
-                </p>
+        <div class="side-box top-box">
+            <h2>UMAY</h2>
 
-                <div class="small-line"></div>
+            <p>
+                Eski Türk inancında koruyucu, sevgi dolu ve yaşam veren bir ruh olan Umay,
+                bereketin, huzurun ve hayatın simgesidir.
+            </p>
 
-                <p>Bu mekân, Umay Ana’nın sıcaklığını yaşatmak için kuruldu.</p>
+            <div class="small-line"></div>
 
-                <span class="heart">♥</span>
+            <p>Bu mekân, Umay Ana’nın sıcaklığını yaşatmak için kuruldu.</p>
+
+            <span class="heart">♥</span>
+        </div>
+
+        <div class="side-box note-box">
+            <h3>Her şey</h3>
+            <ul>
+                <li>Ev yapımıdır.</li>
+                <li>Katkısızdır.</li>
+                <li>Şeker yerine bal tercih edilir.</li>
+                <li>Günlük taze hazırlanır.</li>
+            </ul>
+        </div>
+
+        <div class="side-badge">
+            <p>UMAY ANA’DA</p>
+            <strong>HER ŞEY BİRAZ EV<br>BİRAZ DOĞA<br>BİRAZ HUZUR</strong>
+        </div>
+
+    </aside>
+
+    <main class="menu-area">
+
+        <header class="header">
+            <img 
+                src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" 
+                class="logo" 
+                alt="Umay Ana logo"
+            >
+            <h1>Umay Ana</h1>
+            <h4>Kahve Evi</h4>
+        </header>
+
+<section class="category-grid" id="menuListesi">
+
+    {% for ana_id, ana_bilgi in menu.items() %}
+
+        <div class="main-category-title">
+            <h2>{{ ana_bilgi["ikon"] }} {{ ana_bilgi["ana_kategori"] }}</h2>
+        </div>
+
+        {% for kategori_id, kategori_bilgi in ana_bilgi["alt_kategoriler"].items() %}
+        <div class="category-box">
+
+            <div class="category-title" onclick="toggleCategory(this)">
+                <span class="category-icon">{{ kategori_bilgi["ikon"] }}</span>
+
+                <div class="category-heading">
+                    <h2>
+                        {{ kategori_bilgi["kategori"] }}
+                        <span class="arrow">⌄</span>
+                    </h2>
+                    <p>{{ kategori_bilgi["alt_baslik"] }}</p>
+                </div>
             </div>
 
-            <div class="side-box note-box">
-                <h3>Her şey</h3>
-                <ul>
-                    <li>Ev yapımıdır.</li>
-                    <li>Katkısızdır.</li>
-                    <li>Şeker yerine bal tercih edilir.</li>
-                    <li>Günlük taze hazırlanır.</li>
-                </ul>
-            </div>
+            <div class="category-products">
 
-            <div class="side-badge">
-                <p>UMAY ANA’DA</p>
-                <strong>HER ŞEY BİRAZ EV<br>BİRAZ DOĞA<br>BİRAZ HUZUR</strong>
-            </div>
-        </aside>
+                {% for urun_id, urun in kategori_bilgi["urunler"].items() %}
+                <div class="menu-row" id="urun-{{ ana_id }}-{{ kategori_id }}-{{ urun_id }}">
 
-        <main class="menu-area">
+                    <img 
+                        src="{{ url_for('static', filename='images/' ~ urun[2]) }}" 
+                        class="product-img" 
+                        alt="{{ urun[0] }}"
+                    >
 
-            <img src="{{ url_for('static', filename='images/yaprak-removebg-preview.png') }}" class="leaf leaf-top-right" alt="Yaprak süsleme">
-
-            <header class="header">
-                <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="logo" alt="Umay Ana logo">
-                <h1>Umay Ana</h1>
-                <h4>Kahve Evi</h4>
-                <p>Doğadan gelen huzur...</p>
-            </header>
-
-            <section class="category-grid">
-                {% for kategori_id, kategori_bilgi in menu.items() %}
-                <div class="category-box">
-
-                    <div class="category-title">
-                        <span>{{ kategori_bilgi["ikon"] }}</span>
-                        <div>
-                            <h2>{{ kategori_bilgi["kategori"] }}</h2>
-                            <p>{{ kategori_bilgi["alt_baslik"] }}</p>
-                        </div>
+                    <div class="product-info">
+                        <h3>{{ urun[0] }}</h3>
+                        <p>{{ urun[3] }}</p>
                     </div>
 
-                    {% for urun_id, urun in kategori_bilgi["urunler"].items() %}
-                    <div class="menu-row" id="urun-{{ kategori_id }}-{{ urun_id }}">
+                    <div class="product-price">
+                        <strong>{{ "%.0f"|format(urun[1]) }} TL</strong>
 
-                        <img src="{{ url_for('static', filename='images/' ~ urun[2]) }}" class="product-img" alt="{{ urun[0] }}">
-
-                        <div class="product-info">
-                            <h3>{{ urun[0] }}</h3>
-                            <p>{{ urun[3] }}</p>
-                        </div>
-
-                        <div class="product-price">
-                            <strong>{{ "%.0f"|format(urun[1]) }} TL</strong>
-
-                            <form action="{{ url_for('ekle') }}" method="post">
-                                <input type="hidden" name="urun_adi" value="{{ urun[0] }}">
-                                <input type="hidden" name="fiyat" value="{{ urun[1] }}">
-                                <input type="hidden" name="anchor" value="urun-{{ kategori_id }}-{{ urun_id }}">
-                                <button type="submit">+</button>
-                            </form>
-                        </div>
-
+                        <form action="{{ url_for('ekle') }}" method="post">
+                            <input type="hidden" name="urun_adi" value="{{ urun[0] }}">
+                            <input type="hidden" name="fiyat" value="{{ urun[1] }}">
+                            <button type="submit">+</button>
+                        </form>
                     </div>
-                    {% endfor %}
 
                 </div>
                 {% endfor %}
-            </section>
 
-            <footer class="footer-text">
-                Teşekkür ederiz, iyi ki varsınız ♥
-            </footer>
+            </div>
 
-        </main>
+        </div>
+        {% endfor %}
 
-    </div>
+    {% endfor %}
 
-    <div class="sepet" id="sepet">
-        <h2>🛒 Sepet</h2>
+</section>
 
-        {% if siparisler %}
-        <ul>
-            {% for urun in siparisler %}
-            <li class="sepet-item">
+        <footer class="footer-text">
+            Teşekkür ederiz, iyi ki varsınız ♥
+        </footer>
 
-                <div class="sepet-bilgi">
-                    <strong>{{ urun["urun"] }}</strong>
-                    <span>x{{ urun["adet"] }}</span>
-                </div>
+    </main>
 
-                <div class="sepet-actions">
-                    <form action="{{ url_for('azalt') }}" method="post">
-                        <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
-                        <button type="submit" class="minus-btn">-</button>
-                    </form>
+</div>
 
-                    <form action="{{ url_for('ekle') }}" method="post">
-                        <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
-                        <input type="hidden" name="fiyat" value="{{ urun['fiyat'] }}">
-                        <button type="submit" class="plus-btn">+</button>
-                    </form>
-                </div>
+<div class="sepet" id="sepet">
+    <h2>🛒 Sepet</h2>
 
-                <strong>{{ "%.0f"|format(urun["fiyat"] * urun["adet"]) }} TL</strong>
+    {% if siparisler %}
 
-            </li>
-            {% endfor %}
-        </ul>
+    <ul>
+        {% for urun in siparisler %}
+        <li class="sepet-item">
 
-        <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
+            <div class="sepet-bilgi">
+                <strong>{{ urun["urun"] }}</strong>
+                <span>x{{ urun["adet"] }}</span>
+            </div>
 
-        <button type="button" class="order-btn">
-            Sipariş Oluştur
-        </button>
+            <div class="sepet-actions">
 
-        <form action="{{ url_for('temizle') }}" method="post">
-            <button class="clear-btn" type="submit">Sepeti Temizle</button>
-        </form>
+                <form action="{{ url_for('azalt') }}" method="post">
+                    <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
+                    <button type="submit" class="minus-btn">-</button>
+                </form>
 
-        {% else %}
-        <p class="empty-cart">Sepetiniz boş</p>
-        {% endif %}
-    </div>
+                <form action="{{ url_for('ekle') }}" method="post">
+                    <input type="hidden" name="urun_adi" value="{{ urun['urun'] }}">
+                    <input type="hidden" name="fiyat" value="{{ urun['fiyat'] }}">
+                    <button type="submit" class="plus-btn">+</button>
+                </form>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const savedScroll = sessionStorage.getItem("scrollPosition");
+            </div>
 
-            if (savedScroll !== null) {
-                window.scrollTo(0, Number(savedScroll));
-                sessionStorage.removeItem("scrollPosition");
-            }
+            <strong>{{ "%.0f"|format(urun["fiyat"] * urun["adet"]) }} TL</strong>
 
-            document.querySelectorAll("form").forEach(function (form) {
-                form.addEventListener("submit", function () {
-                    sessionStorage.setItem("scrollPosition", window.scrollY);
-                });
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
+
+    <button type="button" class="order-btn">
+        Sipariş Oluştur
+    </button>
+
+    <form action="{{ url_for('temizle') }}" method="post">
+        <button class="clear-btn" type="submit">Sepeti Temizle</button>
+    </form>
+
+    {% else %}
+
+    <p class="empty-cart">Sepetiniz boş</p>
+
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedScroll = sessionStorage.getItem("scrollPosition");
+
+        if (savedScroll !== null) {
+            window.scrollTo(0, Number(savedScroll));
+            sessionStorage.removeItem("scrollPosition");
+        }
+
+        document.querySelectorAll("form").forEach(function (form) {
+            form.addEventListener("submit", function () {
+                sessionStorage.setItem("scrollPosition", window.scrollY);
             });
         });
-    </script>
+    });
+
+    function toggleCategory(element) {
+        const categoryBox = element.closest(".category-box");
+        const products = categoryBox.querySelector(".category-products");
+        const arrow = element.querySelector(".arrow");
+
+        if (products.style.display === "none") {
+            products.style.display = "block";
+            arrow.innerHTML = "⌄";
+        } else {
+            products.style.display = "none";
+            arrow.innerHTML = "›";
+        }
+    }
+</script>
+
 </body>
 </html>
