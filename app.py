@@ -158,6 +158,9 @@ menu = {
 def toplam_hesapla():
     return sum(urun["fiyat"] * urun["adet"] for urun in siparisler)
 
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
 
 @app.route("/")
 def index():
