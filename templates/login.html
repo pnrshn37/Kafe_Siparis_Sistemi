@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umay Ana | Giriş</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+
+            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" alt="Umay Ana Logo">
+
+            <h1>Umay Ana</h1>
+
+            <p>Kahve Evi Yönetim Paneli</p>
+
+        </div>
+
+        <form class="login-form">
+
+            <label>Kullanıcı Adı</label>
+
+            <div class="input-group">
+
+                <span class="input-icon">👤</span>
+
+                <input type="text" placeholder="Kullanıcı adınızı girin">
+
+            </div>
+
+            <label>Şifre</label>
+
+            <div class="input-group">
+
+    <input type="password" placeholder="••••••••">
+
+    <span class="input-icon">👁️</span>
+
+</div>
+            <button type="button">
+
+                Giriş Yap
+
+            </button>
+
+            <a href="{{ url_for('forgot_password') }}" class="forgot-link">
+
+                Şifremi Unuttum
+
+            </a>
+
+        </form>
+
+        <span class="login-note">
+
+            Yetkili kullanıcı girişi
+
+        </span>
+
+    </div>
+
+</div>
+
+</body>
+</html>
