@@ -1,61 +1,83 @@
-☕ Umay Ana Kahve Evi - Web Tabanlı Kafe Sipariş Sistemi
+# ☕ Umay Ana Kahve Evi - Web Tabanlı Kafe Sipariş Sistemi
 
-Bu proje, Python kullanılarak geliştirilen basit bir kafe sipariş sisteminin
-Flask ile web uygulamasına dönüştürülmüş halidir.
-
-Kullanıcılar web arayüzü üzerinden:
-
-Menüdeki ürünleri görüntüleyebilir
-Ürünleri sepete ekleyebilir
-Sepet içeriğini ve toplam tutarı görebilir
-
-👉 Projenin geliştirme sürecini ve detaylarını Instagram hesabımda paylaşıyorum:
-🔗 https://www.instagram.com/pinartechjourney
-
-🚀 Özellikler
-📋 Kategori bazlı menü (Kahveler, Çaylar, Tatlılar, Atıştırmalıklar)
-🛒 Sepete ürün ekleme
-➕ Tek tıkla sipariş oluşturma
-💰 Toplam tutar hesaplama
-🧹 Sepeti temizleme
-🖼️ Ürün görselleri
-🧾 Ürün açıklamaları (örnek: meyveli, çikolatalı vb.)
-🎨 Modern ve kullanıcı dostu web arayüzü
-🧠 Kullanılan Teknolojiler
-Python
-Flask
-HTML
-CSS
-Jinja2 (Flask template engine)
-
-🔄 Projenin Evrimi
-Bu proje başlangıçta:
-➡️ Konsol (terminal) tabanlı Python uygulamasıydı
-Daha sonra:
-➡️ Flask kullanılarak web uygulamasına dönüştürüldü
-
-Bu süreçte:
-print() → HTML
-input() → form & buton
-while → route yapısı gibi dönüşümler gerçekleştirilmiştir.
-
-⚙️ Kurulum ve Çalıştırma
-Projeyi klonla:
-git clone https://github.com/kullanici-adin/repo-adi.git
-Proje klasörüne gir:
+Umay Ana Kahve Evi, Python ve Flask kullanılarak geliştirilen modern web tabanlı bir kafe sipariş ve yönetim sistemi projesidir.
+Bu proje başlangıçta terminal (console) tabanlı basit bir Python uygulaması olarak geliştirilmiş, daha sonrasında Flask kullanılarak modern bir web uygulamasına dönüştürülmüştür.
+---
+# 🚀 Proje Özellikleri
+* 📋 Kategori bazlı menü sistemi
+* ☕ Kahve, çay, tatlı ve atıştırmalık yönetimi
+* 🛒 Sepete ürün ekleme sistemi
+* 💰 Toplam tutar hesaplama
+* 🖼️ Ürün görselleri ve açıklamaları
+* 📱 Responsive ve modern kullanıcı arayüzü
+* 🔐 Admin giriş paneli
+* 🔑 Şifremi unuttum ekranı
+* 📊 Yönetim paneli tasarımı
+* 🌿 Modern kahve temalı UI/UX tasarımı
+* 🧩 Flask template sistemi kullanımı
+* 📂 GitHub sürüm kontrol sistemi
+---
+# 🛠️ Kullanılan Teknolojiler
+* Python
+* Flask
+* HTML5
+* CSS3
+* Jinja2
+* Git & GitHub
+---
+# 📌 Projenin Gelişim Süreci
+Bu proje geliştirilirken:
+* print() yapısından web arayüzüne geçiş,
+* HTML form yapıları,
+* Flask route sistemi,
+* Template mantığı,
+* Frontend & Backend bağlantısı,
+* Modern admin panel tasarımı
+gibi birçok konu üzerinde çalışma gerçekleştirilmiştir.
+---
+# 🎯 Proje Amacı
+Bu proje ile:
+* Python bilgilerini geliştirmek,
+* Flask framework’ünü öğrenmek,
+* Backend ve Frontend bağlantısını kavramak,
+* Gerçek bir sistem mantığında proje geliştirmek,
+* SQL ve dinamik veri yönetimine geçiş yapmak
+amaçlanmaktadır.
+---
+# 🔮 Planlanan Özellikler
+* 🧾 Gerçek sipariş sistemi
+* 📱 QR menü sistemi
+* 🗄️ SQL veritabanı entegrasyonu
+* 👤 Kullanıcı oturum sistemi
+* 🔔 Bildirim sistemi
+* 📈 Raporlama ekranları
+* ☁️ Canlı yayın (deployment)
+---
+# ⚙️ Kurulum
+Projeyi klonlayın:
+```bash
+git clone https://github.com/pnrshn37/Kafe_Siparis_Sistemi.git
+```
+Proje klasörüne girin:
+```bash
 cd Kafe_Siparis_Sistemi
-Flask yükle:
+```
+Flask yükleyin:
+```bash
 pip install flask
-Uygulamayı çalıştır:
+```
+Uygulamayı çalıştırın:
+```bash
 python app.py
-Tarayıcıdan aç:
-(http://127.0.0.1:5000)
-
-📌 Proje Amacı
-
-Bu proje ile:Python temel bilgilerini pekiştirmek, Konsol uygulamasını web uygulamasına dönüştürmek, Backend (Flask) + Frontend (HTML/CSS) bağlantısını öğrenmek amaçlanmıştır.
-
-👩‍💻 Geliştirici
+```
+Tarayıcıdan açın:
+```text
+http://127.0.0.1:5050
+```
+---
+# 👩‍💻 Geliştirici
 Pınar Şahin
-📌 GitHub: (buraya GitHub linkini ekle)
-📌 Instagram: https://www.instagram.com/pinartechjourney
+📌 GitHub:
+https://github.com/pnrshn37
+📌 Instagram Geliştirme Günlüğü:
+https://www.instagram.com/pinartechjourney
