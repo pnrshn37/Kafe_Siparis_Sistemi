@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menü Yönetimi | Umay Ana</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="admin-logo-img" alt="Logo">
+            <h2>Umay Ana</h2>
+            <p>Kahve Evi</p>
+        </div>
+
+        <nav class="admin-menu">
+            <a href="{{ url_for('admin') }}">📋 Aktif Siparişler</a>
+            <a href="#">🍽️ Masalar</a>
+            <a href="#">✅ Tamamlanan Siparişler</a>
+            <a href="#">💳 Ödemeler</a>
+            <a href="#">📊 Raporlar</a>
+            <a href="{{ url_for('admin_menu') }}" class="active">☕ Menü Yönetimi</a>
+            <a href="#">👥 Müşteriler</a>
+            <a href="#">⚙️ Ayarlar</a>
+            <a href="#">🚪 Çıkış Yap</a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1>MENÜ YÖNETİMİ</h1>
+                <p>Ürünleri ekle, düzenle ve fiyatları yönet</p>
+            </div>
+
+         <button class="add-product-btn" onclick="openPopup()">
+    + Yeni Ürün Ekle
+</button>
+        </header>
+
+        <section class="menu-management-panel">
+
+            <div class="menu-filter">
+                <input type="text" placeholder="Ürün ara...">
+
+                <select>
+                    <option>Tüm Kategoriler</option>
+                    <option>Kahveler</option>
+                    <option>Soğuk Kahveler</option>
+                    <option>Çaylar</option>
+                    <option>Tatlılar</option>
+                    <option>Atıştırmalıklar</option>
+                </select>
+            </div>
+
+            <div class="product-table">
+
+                <div class="table-header">
+                    <span>Ürün</span>
+                    <span>Kategori</span>
+                    <span>Fiyat</span>
+                    <span>Durum</span>
+                    <span>İşlem</span>
+                </div>
+
+                <div class="table-row">
+                    <span>☕ Türk Kahvesi</span>
+                    <span>Kahveler</span>
+                    <span>100 TL</span>
+                    <span class="status-active">Aktif</span>
+                    <span>
+                        <button class="edit-btn" onclick="editProduct(this)">
+    Düzenle
+</button>
+                        <button class="delete-btn">Sil</button>
+                    </span>
+                </div>
+
+                <div class="table-row">
+                    <span>🥤 Limonata</span>
+                    <span>Soğuk İçecekler</span>
+                    <span>100 TL</span>
+                    <span class="status-active">Aktif</span>
+                    <span>
+                      <button class="edit-btn" onclick="editProduct(this)">
+    Düzenle
+</button>
+                        <button class="delete-btn">Sil</button>
+                    </span>
+                </div>
+
+                <div class="table-row">
+                    <span>🍰 Cheesecake</span>
+                    <span>Tatlılar</span>
+                    <span>175 TL</span>
+                    <span class="status-passive">Pasif</span>
+                    <span>
+                        <button class="edit-btn" onclick="editProduct(this)">
+    Düzenle
+</button>
+                        <button class="delete-btn">Sil</button>
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+<!-- ÜRÜN EKLE POPUP -->
+
+<div class="popup-overlay" id="productPopup">
+
+    <div class="product-popup">
+
+        <div class="popup-header">
+            <div class="popup-title">
+
+    <img
+        src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}"
+        class="popup-logo"
+        alt="Umay Ana Logo"
+    >
+
+  <h2 id="popupTitle">Yeni Ürün Ekle</h2>
+
+</div>
+
+            <button class="close-popup" onclick="closePopup()">
+                ✖
+            </button>
+        </div>
+
+ <form class="product-form">
+
+    <label>Kategori</label>
+    <select id="productCategory">
+        <option>Kahveler</option>
+        <option>Soğuk Kahveler</option>
+        <option>Çaylar</option>
+        <option>Soğuk İçecekler</option>
+        <option>Tatlılar</option>
+        <option>Atıştırmalıklar</option>
+    </select>
+
+    <label>Ürün Adı</label>
+    <input type="text" id="productName" placeholder="Örn: Türk Kahvesi">
+
+    <label>Açıklama</label>
+    <textarea id="productDescription" placeholder="Ürün açıklaması"></textarea>
+
+    <label>Fiyat</label>
+    <input type="number" id="productPrice" placeholder="100">
+
+    <label>Görsel</label>
+    <input type="file" id="productImage" accept=".jpg,.jpeg,.png,.webp">
+
+    <label>Durum</label>
+   <select id="productStatus">
+    <option>Aktif</option>
+    <option>Pasif</option>
+</select>
+
+    <div class="popup-buttons">
+
+  <button
+    type="button"
+    class="save-btn"
+    id="saveButton"
+    onclick="saveProduct()">
+    Kaydet
+</button>
+
+        <button type="button" class="cancel-btn" onclick="closePopup()">
+            Vazgeç
+        </button>
+
+    </div>
+
+</form>
+
+    </div>
+
+</div>
+<!-- UYARI POPUP -->
+
+<div class="warning-popup-overlay" id="warningPopup">
+
+    <div class="warning-popup">
+
+        <div class="warning-icon">!</div>
+
+        <h3 id="warningTitle">Eksik Bilgi</h3>
+
+        <p id="warningMessage">Lütfen fiyat bilgisi giriniz.</p>
+
+        <button type="button" onclick="closeWarningPopup()">
+            Tamam
+        </button>
+
+    </div>
+
+</div>
+<script>
+
+let successMode = false;
+let editMode = false;
+
+function openPopup() {
+    document.getElementById("productPopup").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("productPopup").style.display = "none";
+
+    document.querySelector(".product-form").reset();
+
+    editMode = false;
+
+    document.getElementById("popupTitle").textContent = "Yeni Ürün Ekle";
+    document.getElementById("saveButton").textContent = "Kaydet";
+}
+
+function showWarningPopup(title, message, isSuccess = false) {
+    successMode = isSuccess;
+
+    document.getElementById("warningTitle").textContent = title;
+    document.getElementById("warningMessage").textContent = message;
+    document.getElementById("warningPopup").style.display = "flex";
+}
+
+function closeWarningPopup() {
+    document.getElementById("warningPopup").style.display = "none";
+
+    if (successMode) {
+        document.querySelector(".product-form").reset();
+        closePopup();
+        successMode = false;
+    }
+}
+
+function saveProduct() {
+
+    const price = document.getElementById("productPrice").value;
+    const imageInput = document.getElementById("productImage");
+
+    if (price === "") {
+        showWarningPopup("Eksik Bilgi", "Lütfen fiyat bilgisi giriniz.");
+        return;
+    }
+
+    if (imageInput.files.length > 0) {
+
+        const fileName = imageInput.files[0].name.toLowerCase();
+
+        if (
+            !fileName.endsWith(".jpg") &&
+            !fileName.endsWith(".jpeg") &&
+            !fileName.endsWith(".png") &&
+            !fileName.endsWith(".webp")
+        ) {
+            showWarningPopup(
+                "Geçersiz Dosya Türü",
+                "Sadece JPG, JPEG, PNG veya WEBP dosyası yükleyebilirsiniz."
+            );
+            return;
+        }
+    }
+
+    if (editMode) {
+        showWarningPopup("İşlem Başarılı", "Ürün bilgileri başarıyla güncellendi.", true);
+    } else {
+        showWarningPopup("İşlem Başarılı", "Ürün başarıyla kaydedildi.", true);
+    }
+}
+
+function editProduct(button) {
+
+    const row = button.closest(".table-row");
+
+    const productName = row.children[0].textContent.replace("☕", "").replace("🥤", "").replace("🍰", "").trim();
+    const category = row.children[1].textContent.trim();
+    const price = row.children[2].textContent.replace("TL", "").trim();
+    const status = row.children[3].textContent.trim();
+
+    openPopup();
+
+    editMode = true;
+
+    document.getElementById("popupTitle").textContent = "Ürün Düzenle";
+    document.getElementById("saveButton").textContent = "Güncelle";
+
+    document.getElementById("productName").value = productName;
+    document.getElementById("productCategory").value = category;
+    document.getElementById("productPrice").value = price;
+    document.getElementById("productStatus").value = status;
+}
+
+</script>
+</body>
+</html>

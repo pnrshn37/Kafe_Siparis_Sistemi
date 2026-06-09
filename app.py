@@ -171,6 +171,18 @@ def login():
 def forgot_password():
     return render_template("forgot-password.html")
 
+@app.route("/admin/menu")
+def admin_menu():
+    return render_template("admin-menu.html")
+
+@app.route("/admin/settings")
+def admin_settings():
+    return render_template("admin-settings.html")
+
+@app.route("/admin/tables")
+def admin_tables():
+    return render_template("admin-tables.html")
+
 @app.route("/")
 def index():
     toplam = toplam_hesapla()

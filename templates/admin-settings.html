@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ayarlar | Umay Ana</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="admin-logo-img" alt="Logo">
+            <h2>Umay Ana</h2>
+            <p>Kahve Evi</p>
+        </div>
+
+        <nav class="admin-menu">
+            <a href="{{ url_for('admin') }}">📋 Aktif Siparişler</a>
+            <a href="#">🍽️ Masalar</a>
+            <a href="#">✅ Tamamlanan Siparişler</a>
+            <a href="#">💳 Ödemeler</a>
+            <a href="#">📊 Raporlar</a>
+            <a href="{{ url_for('admin_menu') }}">☕ Menü Yönetimi</a>
+            <a href="#">👥 Müşteriler</a>
+            <a href="{{ url_for('admin_settings') }}" class="active">⚙️ Ayarlar</a>
+            <a href="#">🚪 Çıkış Yap</a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1>AYARLAR</h1>
+                <p>Kafe ayarlarını ve sistem yapılandırmasını yönetin.</p>
+            </div>
+        </header>
+
+        <section class="settings-panel">
+
+            <div class="settings-section">
+                <h2>☕ Kafe Bilgileri</h2>
+
+                <div class="settings-grid">
+                    <div>
+                        <label>Kafe Adı</label>
+                        <input type="text" value="Umay Ana Kahve Evi">
+                    </div>
+
+                    <div>
+                        <label>Telefon</label>
+                        <input type="text" value="0555 123 45 67">
+                    </div>
+
+                    <div>
+                        <label>E-posta</label>
+                        <input type="email" value="info@umayana.com">
+                    </div>
+
+                    <div>
+                        <label>Instagram</label>
+                        <input type="text" value="@umayanakahveevi">
+                    </div>
+
+                    <div class="wide">
+                        <label>Adres</label>
+                        <input type="text" value="Atatürk Cad. No:45, Çankaya / Ankara">
+                    </div>
+
+                    <div>
+                        <label>Logo</label>
+                        <input type="file">
+                    </div>
+
+                    <div>
+                        <label>Önizleme</label>
+                        <div class="logo-preview">
+                            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" alt="Logo">
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="settings-save-btn"
+                    onclick="showSettingsPopup('Kafe bilgileri başarıyla kaydedildi.')">
+                    Kaydet
+                </button>
+            </div>
+
+            <div class="settings-section">
+                <h2>🧾 Sipariş Ayarları</h2>
+
+                <div class="toggle-grid">
+                    <div class="toggle-card">
+                        <div>
+                            <strong>Sipariş Notu Aktif</strong>
+                            <p>Müşteriler siparişe not ekleyebilir.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-card">
+                        <div>
+                            <strong>Masa Numarası Zorunlu</strong>
+                            <p>Sipariş için masa numarası zorunlu olsun.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-card">
+                        <div>
+                            <strong>Müşteri Adı Sor</strong>
+                            <p>Sipariş sırasında müşteri adı alınsın.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-card">
+                        <div>
+                            <strong>Bildirim Sesi Açık</strong>
+                            <p>Yeni siparişlerde bildirim sesi çalsın.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="settings-save-btn"
+                    onclick="showSettingsPopup('Sipariş ayarları başarıyla kaydedildi.')">
+                    Kaydet
+                </button>
+            </div>
+
+            <div class="settings-section">
+                <h2>🎨 Görünüm Ayarları</h2>
+
+                <div class="theme-options">
+                    <button type="button" class="theme-btn active">🟤 Kahverengi</button>
+                    <button type="button" class="theme-btn">🟢 Yeşil</button>
+                    <button type="button" class="theme-btn">🔵 Lacivert</button>
+                    <button type="button" class="theme-btn">⚫ Siyah</button>
+                </div>
+
+                <button
+                    type="button"
+                    class="settings-save-btn"
+                    onclick="showSettingsPopup('Tema ayarları başarıyla kaydedildi.')">
+                    Kaydet
+                </button>
+            </div>
+
+            <div class="settings-section">
+                <h2>👤 Yönetici Hesabı</h2>
+
+                <div class="settings-grid">
+                    <div>
+                        <label>Kullanıcı Adı</label>
+                        <input type="text" value="admin">
+                    </div>
+
+                    <div>
+                        <label>Eski Şifre</label>
+                        <input type="password" value="123456">
+                    </div>
+
+                    <div>
+                        <label>Yeni Şifre</label>
+                        <input type="password">
+                    </div>
+
+                    <div>
+                        <label>Yeni Şifre Tekrar</label>
+                        <input type="password">
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="settings-save-btn"
+                    onclick="showSettingsPopup('Şifre başarıyla güncellendi.')">
+                    Şifreyi Güncelle
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div class="settings-popup-overlay" id="settingsPopup">
+    <div class="settings-popup">
+        <div class="settings-popup-icon">✓</div>
+
+        <h3>İşlem Başarılı</h3>
+
+        <p id="settingsPopupMessage">
+            Ayarlar başarıyla kaydedildi.
+        </p>
+
+        <button type="button" onclick="closeSettingsPopup()">
+            Tamam
+        </button>
+    </div>
+</div>
+
+<script>
+function showSettingsPopup(message) {
+    document.getElementById("settingsPopupMessage").textContent = message;
+    document.getElementById("settingsPopup").style.display = "flex";
+}
+
+function closeSettingsPopup() {
+    document.getElementById("settingsPopup").style.display = "none";
+}
+</script>
+<!-- MASA EKLE POPUP -->
+<div class="popup-overlay" id="tablePopup">
+
+    <div class="product-popup">
+
+        <div class="popup-header">
+
+            <div class="popup-title">
+
+                <img
+                    src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}"
+                    class="popup-logo"
+                    alt="Umay Ana Logo">
+
+                <h2>Yeni Masa Ekle</h2>
+
+            </div>
+
+            <button class="close-popup" onclick="closeTablePopup()">
+                ✖
+            </button>
+
+        </div>
+
+        <form class="product-form">
+
+            <label>Masa Numarası</label>
+            <input type="number" id="tableNumber" placeholder="Örn: 19">
+
+            <label>Masa Adı</label>
+            <input type="text" id="tableName" placeholder="Örn: Bahçe Masa 1">
+
+            <label>Kapasite</label>
+            <input type="number" id="tableCapacity" placeholder="Örn: 4">
+
+            <label>Konum</label>
+            <select id="tableLocation">
+                <option>İç Alan</option>
+                <option>Bahçe</option>
+                <option>Teras</option>
+                <option>Cam Kenarı</option>
+            </select>
+
+            <label>Durum</label>
+            <select id="tableStatus">
+                <option>Boş</option>
+                <option>Dolu</option>
+                <option>Aktif Sipariş</option>
+                <option>Hazırlanıyor</option>
+                <option>Bakımda</option>
+            </select>
+
+            <div class="popup-buttons">
+
+                <button
+                    type="button"
+                    class="save-btn"
+                    onclick="confirmTableSave()">
+                    Kaydet
+                </button>
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="confirmTableCancel()">
+                    İptal
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ONAY POPUP -->
+<div class="warning-popup-overlay" id="tableConfirmPopup">
+
+    <div class="warning-popup">
+
+        <div class="warning-icon">?</div>
+
+        <h3>Emin misiniz?</h3>
+
+        <p id="tableConfirmMessage">
+            Bu masayı kaydetmek istiyor musunuz?
+        </p>
+
+        <div class="popup-buttons" style="justify-content:center;">
+
+            <button type="button" onclick="saveTableConfirmed()">
+                Evet
+            </button>
+
+            <button type="button" onclick="closeTableConfirmPopup()">
+                Hayır
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SONUÇ POPUP -->
+<div class="warning-popup-overlay" id="tableMessagePopup">
+
+    <div class="warning-popup">
+
+        <div class="warning-icon">!</div>
+
+        <h3 id="tableMessageTitle">
+            Bilgi
+        </h3>
+
+        <p id="tableMessageText">
+            İşlem tamamlandı.
+        </p>
+
+        <button
+            type="button"
+            onclick="closeTableMessagePopup()">
+            Tamam
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let tableAction = "";
+
+function openTablePopup() {
+
+    document.getElementById("tablePopup").style.display = "flex";
+}
+
+function closeTablePopup() {
+
+    document.getElementById("tablePopup").style.display = "none";
+}
+
+function confirmTableSave() {
+
+    const tableNumber =
+        document.getElementById("tableNumber").value;
+
+    const tableCapacity =
+        document.getElementById("tableCapacity").value;
+
+    if (tableNumber === "" || tableCapacity === "") {
+
+        showTableMessage(
+            "Eksik Bilgi",
+            "Masa numarası ve kapasite alanları zorunludur."
+        );
+
+        return;
+    }
+
+    tableAction = "save";
+
+    document.getElementById("tableConfirmMessage").textContent =
+        "Bu masayı kaydetmek istiyor musunuz?";
+
+    document.getElementById("tableConfirmPopup").style.display =
+        "flex";
+}
+
+function confirmTableCancel() {
+
+    tableAction = "cancel";
+
+    document.getElementById("tableConfirmMessage").textContent =
+        "Masa ekleme işlemini iptal etmek istiyor musunuz?";
+
+    document.getElementById("tableConfirmPopup").style.display =
+        "flex";
+}
+
+function saveTableConfirmed() {
+
+    document.getElementById("tableConfirmPopup").style.display =
+        "none";
+
+    if (tableAction === "save") {
+
+        document.querySelector(
+            "#tablePopup .product-form"
+        ).reset();
+
+        closeTablePopup();
+
+        showTableMessage(
+            "İşlem Başarılı",
+            "Masa başarıyla kaydedildi."
+        );
+    }
+
+    if (tableAction === "cancel") {
+
+        document.querySelector(
+            "#tablePopup .product-form"
+        ).reset();
+
+        closeTablePopup();
+
+        showTableMessage(
+            "İşlem İptal Edildi",
+            "Masa ekleme işlemi iptal edilmiştir."
+        );
+    }
+
+    tableAction = "";
+}
+
+function closeTableConfirmPopup() {
+
+    document.getElementById("tableConfirmPopup").style.display =
+        "none";
+}
+
+function showTableMessage(title, message) {
+
+    document.getElementById("tableMessageTitle").textContent =
+        title;
+
+    document.getElementById("tableMessageText").textContent =
+        message;
+
+    document.getElementById("tableMessagePopup").style.display =
+        "flex";
+}
+
+function closeTableMessagePopup() {
+
+    document.getElementById("tableMessagePopup").style.display =
+        "none";
+}
+
+</script>
+
+</body>
+</html>

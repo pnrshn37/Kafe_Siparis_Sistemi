@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Masa Yönetimi | Umay Ana</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="admin-logo-img" alt="Logo">
+            <h2>Umay Ana</h2>
+            <p>Kahve Evi</p>
+        </div>
+
+        <nav class="admin-menu">
+            <a href="{{ url_for('admin') }}">📋 Aktif Siparişler</a>
+            <a href="{{ url_for('admin_tables') }}" class="active">🍽️ Masalar</a>
+            <a href="#">✅ Tamamlanan Siparişler</a>
+            <a href="#">💳 Ödemeler</a>
+            <a href="#">📊 Raporlar</a>
+            <a href="{{ url_for('admin_menu') }}">☕ Menü Yönetimi</a>
+            <a href="#">👥 Müşteriler</a>
+            <a href="{{ url_for('admin_settings') }}">⚙️ Ayarlar</a>
+            <a href="#">🚪 Çıkış Yap</a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1>MASA YÖNETİMİ</h1>
+                <p>Kafe masalarını görüntüleyin ve yönetin.</p>
+            </div>
+
+            <button class="add-product-btn" onclick="openTablePopup()">
+                + Masa Ekle
+            </button>
+        </header>
+
+        <section class="table-summary-grid">
+            <div class="table-summary-card">🍽️ <div><p>Toplam Masa</p><h2>18</h2></div></div>
+            <div class="table-summary-card">🟢 <div><p>Boş Masa</p><h2>6</h2></div></div>
+            <div class="table-summary-card">🟠 <div><p>Aktif Siparişli Masa</p><h2>7</h2></div></div>
+            <div class="table-summary-card">🔴 <div><p>Dolu Masa</p><h2>5</h2></div></div>
+        </section>
+
+        <section class="table-filter-panel">
+            <input type="text" placeholder="Masa ara...">
+
+            <select>
+                <option>Tüm Durumlar</option>
+                <option>Boş</option>
+                <option>Aktif Sipariş</option>
+                <option>Dolu</option>
+                <option>Hazırlanıyor</option>
+            </select>
+        </section>
+
+        <section class="tables-management-grid">
+
+            <div class="table-card empty-table">
+                <span class="table-status">Boş</span>
+                <h3>Masa 1</h3>
+                <div class="table-icon">🍽️</div>
+                <p>Kapasite: 4 Kişi</p>
+                <p>Aktif Sipariş: Yok</p>
+                <button>QR Görüntüle</button>
+            </div>
+
+            <div class="table-card order-table">
+                <span class="table-status">Aktif Sipariş</span>
+                <h3>Masa 2</h3>
+                <div class="table-icon">🍽️</div>
+                <p>Kapasite: 4 Kişi</p>
+                <p>Sipariş Tutarı</p>
+                <strong>₺245,00</strong>
+                <div class="table-actions">
+                    <button>Detay</button>
+                    <button>QR Görüntüle</button>
+                </div>
+            </div>
+
+            <div class="table-card full-table">
+                <span class="table-status">Dolu</span>
+                <h3>Masa 3</h3>
+                <div class="table-icon">🍽️</div>
+                <p>Kapasite: 2 Kişi</p>
+                <p>Sipariş Tutarı</p>
+                <strong>₺180,00</strong>
+                <div class="table-actions">
+                    <button>Detay</button>
+                    <button>QR Görüntüle</button>
+                </div>
+            </div>
+
+            <div class="table-card preparing-table">
+                <span class="table-status">Hazırlanıyor</span>
+                <h3>Masa 4</h3>
+                <div class="table-icon">🍽️</div>
+                <p>Kapasite: 4 Kişi</p>
+                <p>Sipariş Tutarı</p>
+                <strong>₺320,00</strong>
+                <div class="table-actions">
+                    <button>Detay</button>
+                    <button>QR Görüntüle</button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- MASA EKLE POPUP -->
+<div class="popup-overlay" id="tablePopup">
+
+    <div class="product-popup">
+
+        <div class="popup-header">
+            <div class="popup-title">
+                <img
+                    src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}"
+                    class="popup-logo"
+                    alt="Umay Ana Logo">
+
+                <h2>Yeni Masa Ekle</h2>
+            </div>
+
+            <button class="close-popup" onclick="closeTablePopup()">
+                ✖
+            </button>
+        </div>
+
+        <form class="product-form">
+
+            <label>Masa Numarası</label>
+            <input type="number" id="tableNumber" placeholder="Örn: 19">
+
+            <label>Masa Adı</label>
+            <input type="text" id="tableName" placeholder="Örn: Bahçe Masa 1">
+
+            <label>Kapasite</label>
+            <input type="number" id="tableCapacity" placeholder="Örn: 4">
+
+            <label>Konum</label>
+            <select id="tableLocation">
+                <option>İç Alan</option>
+                <option>Bahçe</option>
+                <option>Teras</option>
+                <option>Cam Kenarı</option>
+            </select>
+
+            <label>Durum</label>
+            <select id="tableStatus">
+                <option>Boş</option>
+                <option>Dolu</option>
+                <option>Aktif Sipariş</option>
+                <option>Hazırlanıyor</option>
+                <option>Bakımda</option>
+            </select>
+
+            <div class="popup-buttons">
+                <button type="button" class="save-btn" onclick="confirmTableSave()">
+                    Kaydet
+                </button>
+
+                <button type="button" class="cancel-btn" onclick="confirmTableCancel()">
+                    İptal
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ONAY POPUP -->
+<div class="warning-popup-overlay" id="tableConfirmPopup">
+
+    <div class="warning-popup">
+        <div class="warning-icon">?</div>
+
+        <h3>Emin misiniz?</h3>
+
+        <p id="tableConfirmMessage">
+            Bu masayı kaydetmek istiyor musunuz?
+        </p>
+
+        <div class="popup-buttons" style="justify-content:center;">
+            <button type="button" onclick="saveTableConfirmed()">
+                Evet
+            </button>
+
+            <button type="button" onclick="closeTableConfirmPopup()">
+                Hayır
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- SONUÇ POPUP -->
+<div class="warning-popup-overlay" id="tableMessagePopup">
+
+    <div class="warning-popup">
+        <div class="warning-icon">!</div>
+
+        <h3 id="tableMessageTitle">Bilgi</h3>
+
+        <p id="tableMessageText">
+            İşlem tamamlandı.
+        </p>
+
+        <button type="button" onclick="closeTableMessagePopup()">
+            Tamam
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+let tableAction = "";
+
+function openTablePopup() {
+    document.getElementById("tablePopup").style.display = "flex";
+}
+
+function closeTablePopup() {
+    document.getElementById("tablePopup").style.display = "none";
+}
+
+function confirmTableSave() {
+    const tableNumber = document.getElementById("tableNumber").value;
+    const tableCapacity = document.getElementById("tableCapacity").value;
+
+    if (tableNumber === "" || tableCapacity === "") {
+        showTableMessage(
+            "Eksik Bilgi",
+            "Masa numarası ve kapasite alanları zorunludur."
+        );
+        return;
+    }
+
+    tableAction = "save";
+
+    document.getElementById("tableConfirmMessage").textContent =
+        "Bu masayı kaydetmek istiyor musunuz?";
+
+    document.getElementById("tableConfirmPopup").style.display = "flex";
+}
+
+function confirmTableCancel() {
+    tableAction = "cancel";
+
+    document.getElementById("tableConfirmMessage").textContent =
+        "Masa ekleme işlemini iptal etmek istiyor musunuz?";
+
+    document.getElementById("tableConfirmPopup").style.display = "flex";
+}
+
+function saveTableConfirmed() {
+    document.getElementById("tableConfirmPopup").style.display = "none";
+
+    if (tableAction === "save") {
+        document.querySelector("#tablePopup .product-form").reset();
+        closeTablePopup();
+        showTableMessage("İşlem Başarılı", "Masa başarıyla kaydedildi.");
+    }
+
+    if (tableAction === "cancel") {
+        document.querySelector("#tablePopup .product-form").reset();
+        closeTablePopup();
+        showTableMessage("İşlem İptal Edildi", "Masa ekleme işlemi iptal edilmiştir.");
+    }
+
+    tableAction = "";
+}
+
+function closeTableConfirmPopup() {
+    document.getElementById("tableConfirmPopup").style.display = "none";
+}
+
+function showTableMessage(title, message) {
+    document.getElementById("tableMessageTitle").textContent = title;
+    document.getElementById("tableMessageText").textContent = message;
+    document.getElementById("tableMessagePopup").style.display = "flex";
+}
+
+function closeTableMessagePopup() {
+    document.getElementById("tableMessagePopup").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
