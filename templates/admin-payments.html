@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ödemeler | Umay Ana</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="admin-logo-img" alt="Logo">
+            <h2>Umay Ana</h2>
+            <p>Kahve Evi</p>
+        </div>
+
+        <nav class="admin-menu">
+            <a href="{{ url_for('admin') }}">📋 Aktif Siparişler</a>
+            <a href="{{ url_for('admin_tables') }}">🍽️ Masalar</a>
+            <a href="{{ url_for('completed_orders') }}">✅ Tamamlanan Siparişler</a>
+            <a href="{{ url_for('admin_payments') }}" class="active">💳 Ödemeler</a>
+            <a href="#">📊 Raporlar</a>
+            <a href="{{ url_for('admin_menu') }}">☕ Menü Yönetimi</a>
+            <a href="#">👥 Müşteriler</a>
+            <a href="{{ url_for('admin_settings') }}">⚙️ Ayarlar</a>
+            <a href="#">🚪 Çıkış Yap</a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1>ÖDEMELER</h1>
+                <p>Günlük ödeme hareketlerini ve adisyonları takip edin.</p>
+            </div>
+        </header>
+
+        <section class="payment-summary-grid">
+
+            <div class="payment-summary-card">
+                <span>💰</span>
+                <div>
+                    <p>Bugünkü Ciro</p>
+                    <h2>₺5.430</h2>
+                </div>
+            </div>
+
+            <div class="payment-summary-card">
+                <span>💳</span>
+                <div>
+                    <p>Kart Ödemeleri</p>
+                    <h2>₺3.250</h2>
+                </div>
+            </div>
+
+            <div class="payment-summary-card">
+                <span>💵</span>
+                <div>
+                    <p>Nakit Ödemeler</p>
+                    <h2>₺2.180</h2>
+                </div>
+            </div>
+
+            <div class="payment-summary-card">
+                <span>🧾</span>
+                <div>
+                    <p>Toplam Adisyon</p>
+                    <h2>28</h2>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="payment-filter-panel">
+            <input type="text" placeholder="Masa veya ödeme ara...">
+
+            <select>
+                <option>Bugün</option>
+                <option>Bu Hafta</option>
+                <option>Bu Ay</option>
+                <option>Tüm Ödemeler</option>
+            </select>
+
+            <select>
+                <option>Tüm Ödeme Türleri</option>
+                <option>Nakit</option>
+                <option>Kart</option>
+                <option>Online</option>
+            </select>
+        </section>
+
+        <section class="payments-panel">
+
+            <div class="payments-table-header">
+                <span>Masa</span>
+                <span>Ödeme Türü</span>
+                <span>Tarih/Saat</span>
+                <span>Tutar</span>
+                <span>Durum</span>
+                <span>İşlem</span>
+            </div>
+
+            <div class="payments-table-row">
+                <span>Masa 4</span>
+                <span>💳 Kart</span>
+                <span>03.06.2026 - 14:25</span>
+                <strong>₺450</strong>
+                <span class="payment-status paid">Ödendi</span>
+                <div class="payment-actions">
+                    <button>Detay</button>
+                    <button>Fiş Yazdır</button>
+                </div>
+            </div>
+
+            <div class="payments-table-row">
+                <span>Masa 2</span>
+                <span>💵 Nakit</span>
+                <span>03.06.2026 - 14:18</span>
+                <strong>₺180</strong>
+                <span class="payment-status paid">Ödendi</span>
+                <div class="payment-actions">
+                    <button>Detay</button>
+                    <button>Fiş Yazdır</button>
+                </div>
+            </div>
+
+            <div class="payments-table-row">
+                <span>Masa 7</span>
+                <span>💳 Kart</span>
+                <span>03.06.2026 - 14:05</span>
+                <strong>₺320</strong>
+                <span class="payment-status paid">Ödendi</span>
+                <div class="payment-actions">
+                    <button>Detay</button>
+                    <button>Fiş Yazdır</button>
+                </div>
+            </div>
+
+            <div class="payments-table-row">
+                <span>Masa 1</span>
+                <span>⏳ Bekliyor</span>
+                <span>03.06.2026 - 13:55</span>
+                <strong>₺235</strong>
+                <span class="payment-status waiting">Beklemede</span>
+                <div class="payment-actions">
+                    <button>Detay</button>
+                    <button>Ödeme Al</button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

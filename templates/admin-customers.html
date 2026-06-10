@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Müşteriler | Umay Ana</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="{{ url_for('static', filename='images/logo-removebg-preview.png') }}" class="admin-logo-img" alt="Logo">
+            <h2>Umay Ana</h2>
+            <p>Kahve Evi</p>
+        </div>
+
+        <nav class="admin-menu">
+            <a href="{{ url_for('admin') }}">📋 Aktif Siparişler</a>
+            <a href="{{ url_for('admin_tables') }}">🍽️ Masalar</a>
+            <a href="{{ url_for('completed_orders') }}">✅ Tamamlanan Siparişler</a>
+            <a href="{{ url_for('admin_payments') }}">💳 Ödemeler</a>
+            <a href="{{ url_for('admin_reports') }}">📊 Raporlar</a>
+            <a href="{{ url_for('admin_menu') }}">☕ Menü Yönetimi</a>
+            <a href="{{ url_for('admin_customers') }}" class="active">👥 Müşteriler</a>
+            <a href="{{ url_for('admin_settings') }}">⚙️ Ayarlar</a>
+            <a href="#">🚪 Çıkış Yap</a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1>MÜŞTERİLER</h1>
+                <p>Müşteri bilgilerini ve sipariş geçmişlerini takip edin.</p>
+            </div>
+
+            <button class="add-product-btn">+ Müşteri Ekle</button>
+        </header>
+
+        <section class="customer-summary-grid">
+            <div class="customer-summary-card">
+                <span>👥</span>
+                <div>
+                    <p>Toplam Müşteri</p>
+                    <h2>126</h2>
+                </div>
+            </div>
+
+            <div class="customer-summary-card">
+                <span>⭐</span>
+                <div>
+                    <p>Sadık Müşteri</p>
+                    <h2>34</h2>
+                </div>
+            </div>
+
+            <div class="customer-summary-card">
+                <span>🎂</span>
+                <div>
+                    <p>Bu Ay Doğum Günü</p>
+                    <h2>8</h2>
+                </div>
+            </div>
+
+            <div class="customer-summary-card">
+                <span>💰</span>
+                <div>
+                    <p>Ortalama Harcama</p>
+                    <h2>₺185</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="customer-filter-panel">
+            <input type="text" placeholder="Müşteri ara...">
+
+            <select>
+                <option>Tüm Müşteriler</option>
+                <option>Sadık Müşteriler</option>
+                <option>Yeni Müşteriler</option>
+                <option>Doğum Günü Yaklaşanlar</option>
+            </select>
+        </section>
+
+        <section class="customers-panel">
+
+            <div class="customers-table-header">
+                <span>Müşteri</span>
+                <span>Telefon</span>
+                <span>Toplam Sipariş</span>
+                <span>Toplam Harcama</span>
+                <span>Favori Ürün</span>
+                <span>Son Sipariş</span>
+                <span>İşlem</span>
+            </div>
+
+            <div class="customers-table-row">
+                <span>👤 Ayşe Kaya</span>
+                <span>0555 111 22 33</span>
+                <span>18</span>
+                <strong>₺3.450</strong>
+                <span>Latte</span>
+                <span>03.06.2026</span>
+                <button class="detail-btn">Detay</button>
+            </div>
+
+            <div class="customers-table-row">
+                <span>👤 Mehmet Demir</span>
+                <span>0555 222 33 44</span>
+                <span>12</span>
+                <strong>₺2.180</strong>
+                <span>Türk Kahvesi</span>
+                <span>02.06.2026</span>
+                <button class="detail-btn">Detay</button>
+            </div>
+
+            <div class="customers-table-row">
+                <span>👤 Elif Yılmaz</span>
+                <span>0555 333 44 55</span>
+                <span>9</span>
+                <strong>₺1.750</strong>
+                <span>Cheesecake</span>
+                <span>01.06.2026</span>
+                <button class="detail-btn">Detay</button>
+            </div>
+
+            <div class="customers-table-row">
+                <span>👤 Can Arslan</span>
+                <span>0555 444 55 66</span>
+                <span>5</span>
+                <strong>₺920</strong>
+                <span>Limonata</span>
+                <span>30.05.2026</span>
+                <button class="detail-btn">Detay</button>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

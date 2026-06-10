@@ -188,6 +188,21 @@ def index():
     toplam = toplam_hesapla()
     return render_template("index.html", menu=menu, siparisler=siparisler, toplam=toplam)
 
+@app.route("/admin/completed-orders")
+def completed_orders():
+    return render_template("admin-completed-orders.html")
+
+@app.route("/admin/payments")
+def admin_payments():
+    return render_template("admin-payments.html")
+
+@app.route("/admin/reports")
+def admin_reports():
+    return render_template("admin-reports.html")
+
+@app.route("/admin/customers")
+def admin_customers():
+    return render_template("admin-customers.html")
 
 @app.route("/ekle", methods=["POST"])
 def ekle():
