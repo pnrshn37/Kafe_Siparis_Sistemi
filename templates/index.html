@@ -165,10 +165,11 @@
 
     <h3>Toplam: {{ "%.0f"|format(toplam) }} TL</h3>
 
-    <button type="button" class="order-btn">
+   <form action="{{ url_for('siparis_olustur') }}" method="post">
+    <button type="submit" class="order-btn">
         Sipariş Oluştur
     </button>
-
+</form>
     <form action="{{ url_for('temizle') }}" method="post">
         <button class="clear-btn" type="submit">Sepeti Temizle</button>
     </form>

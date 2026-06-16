@@ -113,58 +113,34 @@
                     </select>
                 </div>
 
-                <div class="order-card waiting">
-                    <div class="order-info">
-                        <h3>Masa 4 <span>👥 2 Kişi</span> <span>🕒 14:33</span></h3>
-                        <p>• 2 x Latte</p>
-                        <p>• 1 x Cheesecake</p>
-                    </div>
-                    <div class="order-actions">
-                        <span class="status wait">Beklemede</span>
-                        <button class="detail-btn">Detay</button>
-                        <button class="gold-btn">Hazırlanıyor</button>
-                    </div>
-                </div>
+                {% for siparis in siparisler_db %}
 
-                <div class="order-card preparing">
-                    <div class="order-info">
-                        <h3>Masa 2 <span>👥 4 Kişi</span> <span>🕒 14:31</span></h3>
-                        <p>• 1 x Türk Kahvesi</p>
-                        <p>• 2 x Su</p>
-                        <p>• 1 x Tiramisu</p>
-                    </div>
-                    <div class="order-actions">
-                        <span class="status prep">Hazırlanıyor</span>
-                        <button class="detail-btn">Detay</button>
-                        <button class="green-btn">Hazır</button>
-                    </div>
-                </div>
+<div class="order-card waiting">
 
-                <div class="order-card ready">
-                    <div class="order-info">
-                        <h3>Masa 7 <span>👥 3 Kişi</span> <span>🕒 14:28</span></h3>
-                        <p>• 3 x Filtre Kahve</p>
-                        <p>• 1 x Brownie</p>
-                    </div>
-                    <div class="order-actions">
-                        <span class="status ready-status">Hazır</span>
-                        <button class="detail-btn">Detay</button>
-                        <button class="dark-btn">Teslim Edildi</button>
-                    </div>
-                </div>
+    <div class="order-info">
+        <h3>
+            {{ siparis.MasaNo }}
+            <span>🧾 Sipariş #{{ siparis.SiparisID }}</span>
+        </h3>
 
-                <div class="order-card waiting">
-                    <div class="order-info">
-                        <h3>Masa 1 <span>👥 2 Kişi</span> <span>🕒 14:25</span></h3>
-                        <p>• 1 x Cappuccino</p>
-                        <p>• 1 x Limonata</p>
-                    </div>
-                    <div class="order-actions">
-                        <span class="status wait">Beklemede</span>
-                        <button class="detail-btn">Detay</button>
-                        <button class="gold-btn">Hazırlanıyor</button>
-                    </div>
-                </div>
+        <p>Toplam Tutar: {{ "%.0f"|format(siparis.ToplamTutar) }} TL</p>
+        <p>Durum: {{ siparis.SiparisDurumu }}</p>
+        <p>Tarih: {{ siparis.SiparisTarihi }}</p>
+    </div>
+
+    <div class="order-actions">
+        <span class="status wait">
+            {{ siparis.SiparisDurumu }}
+        </span>
+
+        <button class="detail-btn">
+            Detay
+        </button>
+    </div>
+
+</div>
+
+{% endfor %}
 
                 <a class="view-all" href="#">Tüm siparişleri görüntüle →</a>
             </div>

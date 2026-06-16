@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
+import pyodbc
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -8,6 +9,82 @@ app = Flask(
     template_folder=os.path.join(base_dir, "templates"),
     static_folder=os.path.join(base_dir, "static")
 )
+def get_db_connection():
+    conn = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "SERVER=.\\SQLEXPRESS;"
+        "DATABASE=UmayAnaCafeDB;"
+        "Trusted_Connection=yes;"
+    )
+    return conn
+def get_menu_from_db():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            K.KategoriAdi,
+            U.UrunID,
+            U.UrunAdi,
+            U.Fiyat,
+            U.Gorsel,
+            U.Aciklama
+        FROM Urunler U
+        INNER JOIN Kategoriler K
+            ON U.KategoriID = K.KategoriID
+        WHERE U.Durum = 1
+        ORDER BY K.KategoriID, U.UrunID
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    menu_db = {
+        "icecekler": {
+            "ana_kategori": "İçecekler",
+            "ikon": "☕",
+            "alt_kategoriler": {}
+        },
+        "yiyecekler": {
+            "ana_kategori": "Yiyecekler",
+            "ikon": "🍽️",
+            "alt_kategoriler": {}
+        }
+    }
+
+    kategori_bilgileri = {
+        "Kahveler & Sıcak İçecekler": ("icecekler", "sicak_icecekler", "☕", "Sıcak ve aromatik lezzetler"),
+        "Soğuk Kahveler & Soğuk İçecekler": ("icecekler", "soguk_icecekler", "🍹", "Ferahlatıcı içecekler"),
+        "Çaylar": ("icecekler", "caylar", "🍵", "Demli ve aromatik çaylar"),
+        "Çorbalar": ("yiyecekler", "corbalar", "🥣", "Sıcak başlangıçlar"),
+        "Tatlılar": ("yiyecekler", "tatlilar", "🍰", "Tatlı dokunuşlar"),
+        "Atıştırmalıklar": ("yiyecekler", "atistirmaliklar", "🥐", "Umay’ın sofrası")
+    }
+
+    for row in rows:
+        kategori_adi = row.KategoriAdi
+
+        if kategori_adi not in kategori_bilgileri:
+            continue
+
+        ana_key, alt_key, ikon, alt_baslik = kategori_bilgileri[kategori_adi]
+
+        if alt_key not in menu_db[ana_key]["alt_kategoriler"]:
+            menu_db[ana_key]["alt_kategoriler"][alt_key] = {
+                "kategori": kategori_adi,
+                "ikon": ikon,
+                "alt_baslik": alt_baslik,
+                "urunler": {}
+            }
+
+        menu_db[ana_key]["alt_kategoriler"][alt_key]["urunler"][str(row.UrunID)] = (
+            row.UrunAdi,
+            float(row.Fiyat),
+            row.Gorsel,
+            row.Aciklama
+        )
+
+    return menu_db
 
 siparisler = []
 
@@ -111,7 +188,7 @@ menu = {
                     "7": ("Profiterol", 170.00, "profiterol.jpg", "Çikolata soslu, kremalı toplar"),
                     "8": ("Sufle", 190.00, "sufle.jpg", "İçi akışkan çikolatalı sıcak tatlı"),
                     "9": ("Waffle", 210.00, "waffle.jpg", "Meyve ve çikolata soslu sıcak waffle"),
-                    "10": ("Pankek", 180.00, "pankek.jpg", "Ballı ve meyveli yumuşak pankekler"),
+                    "10": ("Pankek", 180.00, "pankek.jpg", "Ballı ve meyveli yuorder-cardmuşak pankekler"),
                     "11": ("Dondurma", 120.00, "dondurma.jpg", "Farklı aromalarda serinletici lezzet"),
                     "12": ("San Sebastian Cheesecake", 200.00, "sansebastian.jpg", "Yoğun kıvamlı, yanık yüzeyli cheesecake"),
                     "13": ("Trileçe", 165.00, "triliçe.jpg", "Süt şerbetli hafif Balkan tatlısı"),
@@ -158,10 +235,33 @@ menu = {
 def toplam_hesapla():
     return sum(urun["fiyat"] * urun["adet"] for urun in siparisler)
 
+def get_admin_siparisler():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            S.SiparisID,
+            M.MasaNo,
+            S.ToplamTutar,
+            S.SiparisDurumu,
+            S.SiparisTarihi
+        FROM Siparisler S
+        INNER JOIN Masalar M
+            ON S.MasaID = M.MasaID
+        ORDER BY S.SiparisID DESC
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
+
 
 @app.route("/admin")
 def admin():
-    return render_template("admin.html")
+    siparisler_db = get_admin_siparisler()
+    return render_template("admin.html", siparisler_db=siparisler_db)
 
 @app.route("/login")
 def login():
@@ -203,6 +303,18 @@ def admin_reports():
 @app.route("/admin/customers")
 def admin_customers():
     return render_template("admin-customers.html")
+
+@app.route("/db-test")
+def db_test():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM Kategoriler")
+    kategori_sayisi = cursor.fetchone()[0]
+
+    conn.close()
+
+    return f"SQL bağlantısı başarılı. Kategori sayısı: {kategori_sayisi}"
 
 @app.route("/ekle", methods=["POST"])
 def ekle():
@@ -249,7 +361,69 @@ def azalt():
         return redirect(url_for("index") + "#" + anchor)
 
     return redirect(url_for("index"))
+@app.route("/siparis-olustur", methods=["POST"])
+def siparis_olustur():
+    if not siparisler:
+        return redirect(url_for("index"))
 
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        toplam_tutar = toplam_hesapla()
+        masa_id = 1
+
+        cursor.execute("""
+            INSERT INTO Siparisler (MasaID, MusteriID, ToplamTutar)
+            OUTPUT INSERTED.SiparisID
+            VALUES (?, NULL, ?)
+        """, masa_id, toplam_tutar)
+
+        siparis_id = cursor.fetchone()[0]
+
+        for urun in siparisler:
+            urun_adi = urun["urun"]
+            adet = urun["adet"]
+            birim_fiyat = urun["fiyat"]
+            toplam_fiyat = adet * birim_fiyat
+
+            cursor.execute("""
+                SELECT UrunID
+                FROM Urunler
+                WHERE UrunAdi = ?
+            """, urun_adi)
+
+            sonuc = cursor.fetchone()
+
+            if sonuc is None:
+                cursor.execute("""
+                    INSERT INTO Urunler
+                    (KategoriID, UrunAdi, Aciklama, Fiyat, Gorsel)
+                    OUTPUT INSERTED.UrunID
+                    VALUES (?, ?, ?, ?, ?)
+                """, 1, urun_adi, "Menüden eklenen ürün", birim_fiyat, "")
+
+                urun_id = cursor.fetchone()[0]
+            else:
+                urun_id = sonuc[0]
+
+            cursor.execute("""
+                INSERT INTO SiparisDetaylari
+                (SiparisID, UrunID, Adet, BirimFiyat, ToplamFiyat)
+                VALUES (?, ?, ?, ?, ?)
+            """, siparis_id, urun_id, adet, birim_fiyat, toplam_fiyat)
+
+        conn.commit()
+        siparisler.clear()
+
+    except Exception as e:
+        conn.rollback()
+        print("Sipariş kaydı hatası:", e)
+
+    finally:
+        conn.close()
+
+    return redirect(url_for("admin"))
 
 @app.route("/temizle", methods=["POST"])
 def temizle():
@@ -259,3 +433,4 @@ def temizle():
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False, port=5050)
+    
