@@ -210,7 +210,25 @@
             arrow.innerHTML = "›";
         }
     }
+
+    function closeOrderPopup() {
+        const popup = document.getElementById("orderSuccessPopup");
+
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
 </script>
+{% if siparis_basarili %}
+<div class="order-success-popup" id="orderSuccessPopup">
+    <div class="order-success-box">
+        <div class="success-icon">✓</div>
+        <h3>Siparişiniz Oluşturuldu</h3>
+        <p>Siparişiniz başarıyla mutfağa iletildi.</p>
+        <button onclick="closeOrderPopup()">Tamam</button>
+    </div>
+</div>
+{% endif %}
 
 </body>
 </html>

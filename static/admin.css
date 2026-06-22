@@ -350,7 +350,6 @@ body {
     height: 55px;
     border-radius: 12px;
     font-size: 18px;
-    color: white;
     cursor: pointer;
 }
 
@@ -1730,4 +1729,49 @@ body {
     border: 1px solid #d8c1a0;
     margin-top: 10px;
     color: #1f2d1f;
+}
+.table-preparing{
+    background:#f1c40f;
+    color:white;
+}
+
+.table-ready{
+    background:#e67e22;
+    color:white;
+}
+
+.table-served{
+    background:#3498db;
+    color:white;
+}
+
+.table-payment{
+    background:#9b59b6;
+    color:white;
+}
+.table-preparing {
+    background: #f1c40f !important;
+    color: white !important;
+}
+
+.table-ready {
+    background: #e67e22 !important;
+    color: white !important;
+}
+
+.table-served {
+    background: #3498db !important;
+    color: white !important;
+}
+
+.table-payment {
+    background: #9b59b6 !important;
+    color: white !important;
+}
+.table-legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+    font-size:14px;
 }

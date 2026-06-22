@@ -94,41 +94,18 @@
                 <span>İşlem</span>
             </div>
 
-            <div class="completed-table-row">
-                <span>Masa 5</span>
-                <span>2 x Latte, 1 x Cheesecake</span>
-                <span>03.06.2026 - 14:20</span>
-                <strong>₺320</strong>
-                <span class="completed-status">Tamamlandı</span>
-                <button class="detail-btn">Detay</button>
-            </div>
+           {% for siparis in tamamlanan_siparisler %}
 
-            <div class="completed-table-row">
-                <span>Masa 3</span>
-                <span>1 x Türk Kahvesi, 1 x Brownie</span>
-                <span>03.06.2026 - 14:15</span>
-                <strong>₺260</strong>
-                <span class="completed-status">Tamamlandı</span>
-                <button class="detail-btn">Detay</button>
-            </div>
+<div class="completed-table-row">
+    <span>{{ siparis.MasaNo }}</span>
+    <span>Sipariş #{{ siparis.SiparisID }}</span>
+    <span>{{ siparis.SiparisTarihi }}</span>
+    <strong>₺{{ "%.0f"|format(siparis.ToplamTutar) }}</strong>
+    <span class="completed-status">Ödendi</span>
+    <button class="detail-btn">Detay</button>
+</div>
 
-            <div class="completed-table-row">
-                <span>Masa 7</span>
-                <span>3 x Filtre Kahve</span>
-                <span>03.06.2026 - 14:10</span>
-                <strong>₺360</strong>
-                <span class="completed-status">Tamamlandı</span>
-                <button class="detail-btn">Detay</button>
-            </div>
-
-            <div class="completed-table-row">
-                <span>Masa 1</span>
-                <span>1 x Cappuccino, 1 x Limonata</span>
-                <span>03.06.2026 - 14:05</span>
-                <strong>₺235</strong>
-                <span class="completed-status">Tamamlandı</span>
-                <button class="detail-btn">Detay</button>
-            </div>
+{% endfor %}
 
         </section>
 

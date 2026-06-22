@@ -527,3 +527,54 @@ body {
     position: relative;
     z-index: 2;
 }
+.order-success-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.order-success-box {
+    background: #fff8ed;
+    border: 2px solid #c7953d;
+    border-radius: 22px;
+    padding: 32px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.25);
+}
+
+.success-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #3f7f45;
+    color: white;
+    font-size: 34px;
+    line-height: 58px;
+    font-weight: bold;
+}
+
+.order-success-box h3 {
+    color: #2f4326;
+    margin-bottom: 8px;
+}
+
+.order-success-box p {
+    color: #7a5526;
+    margin-bottom: 22px;
+}
+
+.order-success-box button {
+    border: none;
+    background: #c7953d;
+    color: white;
+    padding: 11px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}

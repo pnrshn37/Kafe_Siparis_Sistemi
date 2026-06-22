@@ -1,4 +1,4 @@
-<html lang="tr">
+SiparisDurumu<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
         <nav class="admin-menu">
             <a class="active" href="#">📋 Aktif Siparişler</a>
             <a href="#">🍽️ Masalar</a>
-            <a href="#">✅ Tamamlanan Siparişler</a>
+    <a href="{{ url_for('completed_orders') }}">✅ Tamamlanan Siparişler</a>
             <a href="#">💳 Ödemeler</a>
             <a href="#">📊 Raporlar</a>
             <a href="#">☕ Menü Yönetimi</a>
@@ -66,7 +66,7 @@
                 <div class="stat-icon gold">🧾</div>
                 <div>
                     <p>Toplam Sipariş</p>
-                    <h2>28</h2>
+                    <h2>{{ stats.toplam_siparis }}</h2>
                     <span>Bugünkü toplam sipariş</span>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <div class="stat-icon green">🍽️</div>
                 <div>
                     <p>Aktif Masa</p>
-                    <h2>8</h2>
+                   <h2>{{ stats.aktif_masa }}</h2>
                     <span>Şu anda dolu masa</span>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <div class="stat-icon blue">⏱️</div>
                 <div>
                     <p>Bekleyen Sipariş</p>
-                    <h2>5</h2>
+                <h2>{{ stats.bekleyen_siparis }}</h2>
                     <span>Hazırlanmayı bekliyor</span>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                 <div class="stat-icon purple">💰</div>
                 <div>
                     <p>Toplam Ciro</p>
-                    <h2>₺5.430</h2>
+              <h2>₺{{ "%.0f"|format(stats.toplam_ciro) }}</h2>
                     <span>Bugünkü toplam ciro</span>
                 </div>
             </div>
@@ -113,30 +113,57 @@
                     </select>
                 </div>
 
-                {% for siparis in siparisler_db %}
+{% for siparis in siparisler_db %}
 
 <div class="order-card waiting">
 
     <div class="order-info">
         <h3>
-            {{ siparis.MasaNo }}
-            <span>🧾 Sipariş #{{ siparis.SiparisID }}</span>
+            {{ siparis["MasaNo"] }}
+            <span>🧾 Sipariş #{{ siparis["SiparisID"] }}</span>
         </h3>
 
-        <p>Toplam Tutar: {{ "%.0f"|format(siparis.ToplamTutar) }} TL</p>
-        <p>Durum: {{ siparis.SiparisDurumu }}</p>
-        <p>Tarih: {{ siparis.SiparisTarihi }}</p>
-    </div>
+        {% for urun in siparis["Urunler"] %}
+            <p>• {{ urun["Adet"] }} x {{ urun["UrunAdi"] }}</p>
+        {% endfor %}
 
-    <div class="order-actions">
-        <span class="status wait">
-            {{ siparis.SiparisDurumu }}
-        </span>
-
-        <button class="detail-btn">
-            Detay
-        </button>
+        <p>Toplam Tutar: {{ "%.0f"|format(siparis["ToplamTutar"]) }} TL</p>
+        <p>Durum: {{ siparis["SiparisDurumu"] }}</p>
+        <p>Tarih: {{ siparis["SiparisTarihi"] }}</p>
     </div>
+<div class="order-actions">
+
+    <span class="status wait">
+        {{ siparis["SiparisDurumu"] }}
+    </span>
+
+    {% if siparis["SiparisDurumu"] == "Hazırlanıyor" %}
+
+    <form action="{{ url_for('siparis_durum_guncelle', siparis_id=siparis['SiparisID'], durum='Hazır') }}" method="post">
+        <button class="green-btn" type="submit">Hazır</button>
+    </form>
+
+    {% elif siparis["SiparisDurumu"] == "Hazır" %}
+
+    <form action="{{ url_for('siparis_durum_guncelle', siparis_id=siparis['SiparisID'], durum='Servis Edildi') }}" method="post">
+        <button class="gold-btn" type="submit">Servis Edildi</button>
+    </form>
+
+    {% elif siparis["SiparisDurumu"] == "Servis Edildi" %}
+
+    <form action="{{ url_for('siparis_durum_guncelle', siparis_id=siparis['SiparisID'], durum='Ödeme Bekliyor') }}" method="post">
+        <button class="dark-btn" type="submit">Ödeme Bekliyor</button>
+    </form>
+
+    {% elif siparis["SiparisDurumu"] == "Ödeme Bekliyor" %}
+
+    <form action="{{ url_for('siparis_durum_guncelle', siparis_id=siparis['SiparisID'], durum='Ödendi') }}" method="post">
+        <button class="green-btn" type="submit">Ödendi</button>
+    </form>
+
+    {% endif %}
+
+</div>
 
 </div>
 
@@ -171,43 +198,19 @@
                 </div>
 
                 <div class="completed-panel">
-                    <h2>✅ SON TAMAMLANAN SİPARİŞLER</h2>
+                   {% for siparis in tamamlanan_siparisler %}
 
-                    <div class="completed-row">
-                        <div>
-                            <strong>Masa 5</strong>
-                            <p>2 x Latte, 1 x Cookie</p>
-                        </div>
-                        <span>14:20</span>
-                        <b>₺320</b>
-                    </div>
+<div class="completed-row">
+    <div>
+        <strong>{{ siparis.MasaNo }}</strong>
+        <p>Sipariş #{{ siparis.SiparisID }}</p>
+    </div>
 
-                    <div class="completed-row">
-                        <div>
-                            <strong>Masa 3</strong>
-                            <p>1 x Türk Kahvesi, 1 x Su</p>
-                        </div>
-                        <span>14:15</span>
-                        <b>₺110</b>
-                    </div>
+    <span>{{ siparis.SiparisTarihi }}</span>
+    <b>₺{{ "%.0f"|format(siparis.ToplamTutar) }}</b>
+</div>
 
-                    <div class="completed-row">
-                        <div>
-                            <strong>Masa 6</strong>
-                            <p>2 x Filtre Kahve</p>
-                        </div>
-                        <span>14:10</span>
-                        <b>₺240</b>
-                    </div>
-
-                    <div class="completed-row">
-                        <div>
-                            <strong>Masa 9</strong>
-                            <p>1 x Cappuccino, 1 x Brownie</p>
-                        </div>
-                        <span>14:05</span>
-                        <b>₺295</b>
-                    </div>
+{% endfor %}
 
                     <a class="view-all" href="#">Tümünü görüntüle →</a>
                 </div>

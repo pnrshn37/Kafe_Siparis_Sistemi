@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import os
 import pyodbc
 
@@ -9,6 +9,7 @@ app = Flask(
     template_folder=os.path.join(base_dir, "templates"),
     static_folder=os.path.join(base_dir, "static")
 )
+app.secret_key = "umay_ana_secret_key"
 def get_db_connection():
     conn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};"
@@ -236,6 +237,7 @@ def toplam_hesapla():
     return sum(urun["fiyat"] * urun["adet"] for urun in siparisler)
 
 def get_admin_siparisler():
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -245,23 +247,200 @@ def get_admin_siparisler():
             M.MasaNo,
             S.ToplamTutar,
             S.SiparisDurumu,
-            S.SiparisTarihi
+            S.SiparisTarihi,
+            U.UrunAdi,
+            SD.Adet
         FROM Siparisler S
         INNER JOIN Masalar M
             ON S.MasaID = M.MasaID
+        INNER JOIN SiparisDetaylari SD
+            ON S.SiparisID = SD.SiparisID
+        INNER JOIN Urunler U
+            ON SD.UrunID = U.UrunID
+      WHERE LTRIM(RTRIM(S.SiparisDurumu)) <> N'Ödendi'
         ORDER BY S.SiparisID DESC
     """)
 
     rows = cursor.fetchall()
     conn.close()
 
-    return rows
+    siparisler = {}
 
+    for row in rows:
+        siparis_id = row.SiparisID
+
+        if siparis_id not in siparisler:
+            siparisler[siparis_id] = {
+                "SiparisID": row.SiparisID,
+                "MasaNo": row.MasaNo,
+                "ToplamTutar": row.ToplamTutar,
+                "SiparisDurumu": row.SiparisDurumu,
+                "SiparisTarihi": row.SiparisTarihi,
+                "Urunler": []
+            }
+
+        siparisler[siparis_id]["Urunler"].append({
+            "UrunAdi": row.UrunAdi,
+            "Adet": row.Adet
+        })
+
+    return list(siparisler.values())
+
+def get_tamamlanan_siparisler():
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT TOP 5
+            S.SiparisID,
+            M.MasaNo,
+            S.ToplamTutar,
+            S.SiparisTarihi
+        FROM Siparisler S
+        INNER JOIN Masalar M
+            ON S.MasaID = M.MasaID
+     WHERE LTRIM(RTRIM(S.SiparisDurumu)) = N'Ödendi'
+        ORDER BY S.SiparisID DESC
+    """)
+
+    siparisler = cursor.fetchall()
+
+    conn.close()
+
+    return siparisler
+
+def get_dashboard_stats():
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM Siparisler")
+    toplam_siparis = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM Masalar WHERE Durum = 1")
+    aktif_masa = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM Siparisler
+        WHERE SiparisDurumu IN (
+            'Hazırlanıyor',
+            'Hazır',
+            'Servis Edildi',
+            'Ödeme Bekliyor'
+        )
+    """)
+    bekleyen_siparis = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT ISNULL(SUM(ToplamTutar),0)
+        FROM Siparisler
+        WHERE SiparisDurumu = 'Ödendi'
+    """)
+    toplam_ciro = cursor.fetchone()[0]
+
+    conn.close()
+
+    return {
+        "toplam_siparis": toplam_siparis,
+        "aktif_masa": aktif_masa,
+        "bekleyen_siparis": bekleyen_siparis,
+        "toplam_ciro": toplam_ciro
+    }
+
+def get_masalar():
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            M.MasaID,
+            M.MasaNo,
+            M.Durum,
+            (
+                SELECT TOP 1 S.SiparisDurumu
+                FROM Siparisler S
+                WHERE S.MasaID = M.MasaID
+                  AND LTRIM(RTRIM(S.SiparisDurumu)) <> N'Ödendi'
+                ORDER BY S.SiparisID DESC
+            ) AS SiparisDurumu
+        FROM Masalar M
+        ORDER BY M.MasaID
+    """)
+
+    masalar = cursor.fetchall()
+
+    conn.close()
+
+    return masalar
+def get_admin_urunler():
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            U.UrunID,
+            U.UrunAdi,
+            K.KategoriAdi,
+            U.Fiyat,
+            U.Durum
+        FROM Urunler U
+        INNER JOIN Kategoriler K
+            ON U.KategoriID = K.KategoriID
+        ORDER BY U.UrunID DESC
+    """)
+
+    urunler = cursor.fetchall()
+
+    conn.close()
+
+    return urunler
 
 @app.route("/admin")
 def admin():
+
     siparisler_db = get_admin_siparisler()
-    return render_template("admin.html", siparisler_db=siparisler_db)
+    tamamlanan_siparisler = get_tamamlanan_siparisler()
+    stats = get_dashboard_stats()
+    masalar = get_masalar()
+
+    return render_template(
+        "admin.html",
+        siparisler_db=siparisler_db,
+        tamamlanan_siparisler=tamamlanan_siparisler,
+        stats=stats,
+        masalar=masalar
+    )
+@app.route("/siparis-durum-guncelle/<int:siparis_id>/<durum>", methods=["POST"])
+def siparis_durum_guncelle(siparis_id, durum):
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE Siparisler
+        SET SiparisDurumu = ?
+        WHERE SiparisID = ?
+    """, durum, siparis_id)
+
+    if durum == "Ödendi":
+        cursor.execute("""
+            UPDATE Masalar
+            SET Durum = 0
+            WHERE MasaID = (
+                SELECT MasaID
+                FROM Siparisler
+                WHERE SiparisID = ?
+            )
+        """, siparis_id)
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("admin"))
 
 @app.route("/login")
 def login():
@@ -273,7 +452,13 @@ def forgot_password():
 
 @app.route("/admin/menu")
 def admin_menu():
-    return render_template("admin-menu.html")
+
+    urunler = get_admin_urunler()
+
+    return render_template(
+        "admin-menu.html",
+        urunler=urunler
+    )
 
 @app.route("/admin/settings")
 def admin_settings():
@@ -286,11 +471,23 @@ def admin_tables():
 @app.route("/")
 def index():
     toplam = toplam_hesapla()
-    return render_template("index.html", menu=menu, siparisler=siparisler, toplam=toplam)
+    siparis_basarili = session.pop("siparis_basarili", False)
+    return render_template(
+        "index.html",
+        menu=menu,
+        siparisler=siparisler,
+        toplam=toplam,
+        siparis_basarili=siparis_basarili
+    )
 
 @app.route("/admin/completed-orders")
 def completed_orders():
-    return render_template("admin-completed-orders.html")
+    tamamlanan_siparisler = get_tamamlanan_siparisler()
+
+    return render_template(
+        "admin-completed-orders.html",
+        tamamlanan_siparisler=tamamlanan_siparisler
+    )
 
 @app.route("/admin/payments")
 def admin_payments():
@@ -380,6 +577,11 @@ def siparis_olustur():
         """, masa_id, toplam_tutar)
 
         siparis_id = cursor.fetchone()[0]
+        cursor.execute("""
+    UPDATE Masalar
+    SET Durum = 1
+    WHERE MasaID = ?
+""", masa_id)
 
         for urun in siparisler:
             urun_adi = urun["urun"]
@@ -423,7 +625,8 @@ def siparis_olustur():
     finally:
         conn.close()
 
-    return redirect(url_for("admin"))
+    session["siparis_basarili"] = True
+    return redirect(url_for("index"))
 
 @app.route("/temizle", methods=["POST"])
 def temizle():
